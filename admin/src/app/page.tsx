@@ -1,9 +1,8 @@
-import Image from "next/image";
-
+import Dashboard from "@/components/Dashboard";
 export default function Home() {
   return (
-    <div>
-      <h1>Admin Page</h1>
-    </div>
+    <main>
+      <Dashboard />
+    </main>
   );
 }
