@@ -26,45 +26,59 @@ export const createVote = async (req, res) => {
   console.log(userId, candidateId);
 
   if (!userId || !candidateId) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Please fill all fields",
     });
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-  });
+  try {
+    // Check if the user exists and if they have already voted
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
 
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user has already voted
+    if (user.is_voted) {
+      return res.status(400).json({ message: "User has already voted" });
+    }
+
+    // Check if the candidate exists
+    const candidate = await prisma.candidate.findUnique({
+      where: { id: candidateId },
+    });
+
+    if (!candidate) {
+      return res.status(404).json({ message: "Candidate not found" });
+    }
+
+    // Create a new vote
+    const vote = await prisma.vote.create({
+      data: {
+        userId,
+        candidateId,
+      },
+    });
+
+    // Mark the user as having voted
+    await prisma.user.update({
+      where: { id: userId },
+      data: { is_voted: true },
+    });
+
+    res.status(201).json({
+      message: "Vote created successfully",
+      data: vote,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
   }
-
-  const candidate = await prisma.candidate.findUnique({
-    where: {
-      id: candidateId,
-    },
-  });
-
-  if (!candidate) {
-    res.status(404);
-
-    throw new Error("Candidate not found");
-  }
-
-  const vote = await prisma.vote.create({
-    data: {
-      userId,
-      candidateId,
-    },
-  });
-
-  res.status(201).json({
-    message: "Vote created successfully",
-    data: vote,
-  });
 };
 
 export const updateVote = async (req, res) => {
