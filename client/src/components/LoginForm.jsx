@@ -1,4 +1,33 @@
+import { useState } from "react";
+import axios from "axios";
+
 const LoginForm = () => {
+  const [formData, setFormData] = useState({
+    studentId: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/users/login",
+        formData
+      );
+
+      console.log(response.data);
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
+  };
   return (
     <>
       <div className="flex min-h-screen flex-1 flex-col justify-center items-center px-6 py-12 lg:px-8">
@@ -14,22 +43,23 @@ const LoginForm = () => {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form onSubmit={handleSubmit} method="POST" className="space-y-6">
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="studentId"
                   className="block text-sm/6 font-medium text-gray-900"
                 >
                   Student ID
                 </label>
                 <div className="mt-2">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
+                    id="studentId"
+                    name="studentId"
+                    type="text"
                     required
+                    onChange={handleChange}
                     placeholder="Enter your Student ID"
-                    autoComplete="email"
+                    // autoComplete="email"
                     className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
@@ -57,6 +87,7 @@ const LoginForm = () => {
                     id="password"
                     name="password"
                     type="password"
+                    onChange={handleChange}
                     //   placeholder="Enter your password"
                     required
                     autoComplete="current-password"
