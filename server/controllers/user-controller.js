@@ -22,48 +22,48 @@ export const getUserById = AsyncHandler(async (req, res) => {
 });
 
 export const RegisterUser = AsyncHandler(async (req, res) => {
-    const { name, email, studentId, password, role } = req.body;
+  const { name, email, studentId, password, role } = req.body;
 
-    if (!name || !email || !password || !role || !studentId) {
-        res.status(400);
-        throw new Error("Please fill all fields");
-    }
+  if (!name || !email || !password || !role || !studentId) {
+    res.status(400);
+    throw new Error("Please fill all fields");
+  }
 
-    const userExists = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
+  const userExists = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
 
-    if (userExists) {
-        res.status(400);
-        throw new Error("User already exists");
-    }
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
 
-    const validRoles = ["admin", "user"];
+  const validRoles = ["admin", "user"];
 
-    if (!validRoles.includes(role)) {
-        res.status(400);
-        throw new Error("Invalid role");
-    }
+  if (!validRoles.includes(role)) {
+    res.status(400);
+    throw new Error("Invalid role");
+  }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-        data: {
-            name,
-            email,
-            studentId,
-            password: hashedPassword,
-            role,
-        },
-    });
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      studentId,
+      password: hashedPassword,
+      role,
+    },
+  });
 
-    res.status(201).json({
-        success: true,
-        message: "User created successfully",
-        data: user,
-    });
+  res.status(201).json({
+    success: true,
+    message: "User created successfully",
+    data: user,
+  });
 });
 
 export const UpdateUser = AsyncHandler(async (req, res) => {
@@ -131,8 +131,10 @@ export const loginUser = AsyncHandler(async (req, res) => {
   });
 
   if (!user) {
-    res.status(400);
-    throw new Error("Invalid studentID or password");
+    res.status(400).json({
+      success: false,
+      message: "Invalid studentID or password",
+    });
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
