@@ -29,20 +29,20 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      const token = userData?.token;
-      try {
-        const response = await axios.get("https://jutsa-e-voting-system.onrender.com/api/users", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUsers(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError("Error fetching users");
-        setLoading(false);
-      }
-    };
+    // const fetchUsers = async () => {
+    //   const userData = JSON.parse(localStorage.getItem("userData"));
+    //   const token = userData?.token;
+    //   try {
+    //     const response = await axios.get("http://localhost:3000/api/users", {
+    //       headers: { Authorization: `Bearer ${token}` },
+    //     });
+    //     setUsers(response.data);
+    //     setLoading(false);
+    //   } catch (err) {
+    //     setError("Error fetching users");
+    //     setLoading(false);
+    //   }
+    // };
 
     const fetchCandidatesAndVotes = async () => {
       try {
@@ -57,13 +57,13 @@ const AdminDashboard = () => {
       }
     };
 
-    fetchUsers();
+    // fetchUsers();
     fetchCandidatesAndVotes();
 
     // Set interval to update data every second
     const interval = setInterval(() => {
       fetchCandidatesAndVotes();
-      fetchUsers();
+      // fetchUsers();
     }, 1000); // Every second
 
     // Cleanup interval on component unmount
