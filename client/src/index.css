@@ -4,3 +4,14 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+:root {
+  --primary-color: #2bb77b;
+  --secondary-color: #0e103f;
+  --accent-color: #e3342f;
+}
+
+@theme inline {
+  --color-primary: #2bb77b;
+  --color-secondary: #0e103f;
+}
