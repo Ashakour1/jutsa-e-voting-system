@@ -33,7 +33,7 @@ const AdminDashboard = () => {
       const userData = JSON.parse(localStorage.getItem("userData"));
       const token = userData?.token;
       try {
-        const response = await axios.get("http://localhost:3000/api/users", {
+        const response = await axios.get("https://jutsa-e-voting-system.onrender.com/api/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(response.data);

@@ -13,7 +13,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authMiddleware, getUsers)
+  .get( getUsers)
   .post(authMiddleware, RegisterUser);
 
 router
