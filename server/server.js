@@ -8,7 +8,7 @@ import errorHandler from "./middlewares/error-middleware.js";
 
 dotenv.config();
 const app = express();
-
+app.use(express.static("public"));
 app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +25,7 @@ app.use("/api/users", UserRoutes);
 app.use("/api/votes", VoteRoutes);
 
 app.use("/api/candidates", CandidateRoutes);
-app.use(express.static("public"));
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
