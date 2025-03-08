@@ -19,7 +19,7 @@ const UserList = () => {
     //   return;
     // }
     try {
-      const response = await axios.get("http://localhost:3000/api/users", {
+      const response = await axios.get("https://jutsa-e-voting-system.onrender.com/api/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -40,7 +40,7 @@ const UserList = () => {
     //   return;
     // }
     try {
-      await axios.delete(`/api/users/${id}/`, {
+      await axios.delete(`https://jutsa-e-voting-system.onrender.com/api/users/${id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("User deleted successfully!");

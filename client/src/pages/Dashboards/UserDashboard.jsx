@@ -54,13 +54,16 @@ const UserDashboard = () => {
     if (userIsVoted) return; // Prevent voting if the user has already voted
 
     try {
-      const response = await fetch("http://localhost:3000/api/votes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId, candidateId }),
-      });
+      const response = await fetch(
+        "https://jutsa-e-voting-system.onrender.com/api/votes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, candidateId }),
+        }
+      );
 
       const data = await response.json();
       console.log(data);

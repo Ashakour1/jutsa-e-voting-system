@@ -32,7 +32,7 @@ const UserForm = () => {
     // }
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${id}/`,
+        `https://jutsa-e-voting-system.onrender.com/api/users/${id}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -83,14 +83,14 @@ const UserForm = () => {
 
     try {
       if (id) {
-        await axios.put(`/api/users/${id}/`, userData, {
+        await axios.put(`https://jutsa-e-voting-system.onrender.com/api/users/${id}/`, userData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         toast.success("User updated successfully!");
       } else {
-        await axios.post("http://localhost:3000/api/users/", userData, {
+        await axios.post("https://jutsa-e-voting-system.onrender.com/api/users/", userData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

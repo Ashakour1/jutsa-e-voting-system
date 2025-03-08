@@ -47,7 +47,7 @@ const AdminDashboard = () => {
     const fetchCandidatesAndVotes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/candidates/votes"
+          "https://jutsa-e-voting-system.onrender.com/api/candidates/votes"
         );
         setCandidatesData(response.data);
         setLoading(false);
