@@ -80,10 +80,10 @@ const UserList = () => {
                 <td className="px-4 py-2 text-gray-900">{user.name}</td>
                 <td className="px-4 py-2 text-gray-700">{user.email}</td>
                 <td className="px-4 py-2 text-gray-700">{user.role}</td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 items-end">
                   <Link
                     to={`/admin/dashboard/users/update/${user.id}`}
-                    className="mr-2 rounded-sm bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700"
+                    className="mr-2  rounded-sm bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700"
                   >
                     Update
                   </Link>
