@@ -23,12 +23,12 @@ export const getUserById = AsyncHandler(async (req, res) => {
 });
 
 export const RegisterUser = AsyncHandler(async (req, res) => {
-  const { name, email, studentId, password, role } = req.body;
+  const { studentId, password, role } = req.body;
 
-  if (!name || !email || !password || !role) {
-    res.status(400);
-    throw new Error("Please fill all fields");
-  }
+  // if (!name || !email || !password || !role) {
+  //   res.status(400);
+  //   throw new Error("Please fill all fields");
+  // }
 
   const userExists = await prisma.user.findUnique({
     where: {
