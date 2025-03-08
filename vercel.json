@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./server.js",
+      "use": "@vercel/node",
+      "config": {
+        "buildCommand": "npm run build"
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/api/users/(.*)", "dest": "/server.js" },
+    { "src": "/api/candidates/(.*)", "dest": "/server.js" },
+    {
+      "src": "/api/votes/(.*)",
+      "dest": "/server.js"
+    },
+    { "src": "/", "dest": "/server.js" }
+  ]
+}
