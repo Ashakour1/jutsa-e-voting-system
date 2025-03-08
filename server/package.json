@@ -5,10 +5,15 @@
   "type": "module",
   "main": "index.js",
   "engines": {
-    "node": "20.x"
+    "node": ">=18.18.0 <19.0.0"
   },
   "scripts": {
-    "start": "node server.js"
+     "start": "node server.js",
+    "server" : "nodemon server.js",
+    "postinstall": "prisma generate",
+    "build": "npm run postinstall",
+    "db-push": "npx prisma db push"
+ 
   },
   "keywords": [],
   "author": "",
