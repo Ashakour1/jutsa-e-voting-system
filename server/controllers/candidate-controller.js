@@ -6,31 +6,18 @@ export const getCandidates = AsyncHandler(async (req, res) => {
   res.json(candidates);
 });
 
-export const getCandidateById = AsyncHandler(async (req, res) => {
-  const candidate = await prisma.candidate.findUnique({
-    where: {
-      id: parseInt(req.params.id),
-    },
-  });
-  if (candidate) {
-    res.json(candidate);
-  } else {
-    res.status(404);
-    throw new Error("Candidate not found");
-  }
-});
-
 export const createCandidate = AsyncHandler(async (req, res) => {
-  const { name } = req.body;
+  const { name, bio } = req.body;
 
-  if (!name) {
+  if (!name || !bio) {
     res.status(400);
-    throw new Error("Please fill name field");
+    throw new Error("Please fill all fields");
   }
 
   const candidate = await prisma.candidate.create({
     data: {
       name,
+      bio,
     },
   });
 
@@ -41,21 +28,22 @@ export const createCandidate = AsyncHandler(async (req, res) => {
 });
 
 export const updateCandidate = AsyncHandler(async (req, res) => {
-  const { name } = req.body;
+  const { name, bio } = req.body;
 
   const candidate = await prisma.candidate.findUnique({
     where: {
-      id: parseInt(req.params.id),
+      id: req.params.id,
     },
   });
 
   if (candidate) {
     const updatedCandidate = await prisma.candidate.update({
       where: {
-        id: parseInt(req.params.id),
+        id: req.params.id,
       },
       data: {
         name,
+        bio,
       },
     });
 
@@ -92,20 +80,29 @@ export const deleteCandidate = AsyncHandler(async (req, res) => {
   }
 });
 
-export const getCandidateVotes = AsyncHandler(async (req, res) => {
-  const candidate = await prisma.candidate.findUnique({
-    where: {
-      id: parseInt(req.params.id),
-    },
-    include: {
-      votes: true,
-    },
-  });
+export const getCandidatesWithVotes = async (req, res) => {
+  try {
+    // Fetch candidates and their vote counts
+    const candidates = await prisma.candidate.findMany({
+      select: {
+        id: true, // Select other necessary fields from candidate, like id, name, etc.
+        name: true,
+        votes: {
+          select: {
+            id: true, // Assuming the votes have an id, or you can just use count
+          },
+        },
+      },
+    });
 
-  if (candidate) {
-    res.json(candidate.votes);
-  } else {
-    res.status(404);
-    throw new Error("Candidate not found");
+    // Add a vote count field to each candidate
+    const candidatesWithVoteCount = candidates.map((candidate) => ({
+      ...candidate,
+      voteCount: candidate.votes.length, // Calculate the number of votes
+    }));
+
+    res.json(candidatesWithVoteCount);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching candidates and votes" });
   }
-});
+};

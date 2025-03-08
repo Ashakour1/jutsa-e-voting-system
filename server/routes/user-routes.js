@@ -7,12 +7,21 @@ import {
   loginUser,
 } from "../controllers/user-controller.js";
 import express from "express";
+import authMiddleware from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.route("/").get(getUsers).post(RegisterUser);
+router
+  .route("/")
+  .get(authMiddleware, getUsers)
+  .post(authMiddleware, RegisterUser);
 
-router.route("/:id").get(getUserById).delete(DeleteUser).put(UpdateUser);
+router
+  .route("/:id")
+  .get(authMiddleware, getUserById)
+  .get(authMiddleware)
+  .delete(authMiddleware, DeleteUser)
+  .put(authMiddleware, UpdateUser);
 
 router.route("/login").post(loginUser);
 

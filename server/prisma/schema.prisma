@@ -36,6 +36,7 @@ model Vote {
 model Candidate {
   id        String   @id @default(auto()) @db.ObjectId @map("_id")
   name      String
+  bio      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   votes     Vote[]

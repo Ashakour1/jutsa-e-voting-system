@@ -1,6 +1,7 @@
 import AsyncHandler from "express-async-handler";
 import prisma from "../db/prisma.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const getUsers = AsyncHandler(async (req, res) => {
   const users = await prisma.user.findMany();
@@ -10,7 +11,7 @@ export const getUsers = AsyncHandler(async (req, res) => {
 export const getUserById = AsyncHandler(async (req, res) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: parseInt(req.params.id),
+      id: req.params.id,
     },
   });
   if (user) {
@@ -24,7 +25,7 @@ export const getUserById = AsyncHandler(async (req, res) => {
 export const RegisterUser = AsyncHandler(async (req, res) => {
   const { name, email, studentId, password, role } = req.body;
 
-  if (!name || !email || !password || !role || !studentId) {
+  if (!name || !email || !password || !role) {
     res.status(400);
     throw new Error("Please fill all fields");
   }
@@ -135,6 +136,7 @@ export const loginUser = AsyncHandler(async (req, res) => {
       success: false,
       message: "Invalid studentID or password",
     });
+    return;
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -144,9 +146,14 @@ export const loginUser = AsyncHandler(async (req, res) => {
     throw new Error("Invalid studentID or password");
   }
 
+  const token = jwt.sign({ id: user.id }, process.env.MY_SECRET, {
+    expiresIn: "1h",
+  });
+
   res.status(200).json({
     success: true,
     message: "User logged in successfully",
     data: user,
+    token,
   });
 });
