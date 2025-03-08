@@ -5,11 +5,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon  server.js",
-    "db-push": "prisma db push",
-    "build": "npm run postinstall",
-    "postinstall": "prisma generate",
-    "start": "node server.js"
+    "server": "nodemon server.js",
+    "db-push": "prisma db push",              
+    "build": "npm run postinstall",           
+    "postinstall": "prisma generate",      
+    "start": "node server.js"                 
   },
   "keywords": [],
   "author": "",
