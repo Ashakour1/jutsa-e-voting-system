@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon  server.js",
-    "db-push": "prisma db push"
+    "db-push": "prisma db push",
+    "build": "npm run postinstall",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
