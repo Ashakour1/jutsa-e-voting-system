@@ -12,11 +12,7 @@
   "routes": [
     { "src": "/api/users/(.*)", "dest": "/server.js" },
     { "src": "/api/candidates/(.*)", "dest": "/server.js" },
-    {
-      "src": "/api/votes/(.*)",
-      "dest": "/server.js"
-    },
+    { "src": "/api/votes/(.*)", "dest": "/server.js" },
     { "src": "/", "dest": "/server.js" }
-  ],
-  "outputDirectory": "public"
+  ]
 }
